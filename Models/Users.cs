@@ -2,7 +2,7 @@ using System;
 
 namespace DotNetApiCreate {
     //making class partial to have easy access to modify model
-    public partial class Users {
+    public partial class User {
         public int UserId { get; set; }
         public string FirstName { get; set; } = "";
         public string LastName { get; set; } = "";
