@@ -12,7 +12,7 @@ namespace DotNetApiCreate.Controllers;
 public class UserController : ControllerBase
 {
     private readonly DataContextDapper _dapper;
-    
+
     public UserController(IConfiguration configuration) {
 
         _dapper = new DataContextDapper(configuration);
@@ -35,7 +35,7 @@ public class UserController : ControllerBase
         ";
         users = _dapper.LoadData<User>(sql);
         return users;
-        
+
     }
 
     [HttpGet("GetSingleUser/{UserId}")]
@@ -48,6 +48,51 @@ public class UserController : ControllerBase
         ";
         user = _dapper.LoadDataSingle<User>(sql);
         return user;
+    }
+
+    [HttpPut("UpdateUserFromId")]
+    public IActionResult UpdateUserFromId(User user)
+    {
+        string sql = $@" UPDATE  tutorialAppSchema.Users SET FirstName = '{user.FirstName}'
+        , LastName = '{user.LastName}'
+        , Email = '{user.Email}'
+        , Gender = '{user.Gender}'
+        , Active = '{user.Active}'
+        WHERE UserId = {user.UserId}";
+
+        Console.WriteLine(sql);
+
+        if (_dapper.ExecuteSql(sql))
+        {
+            return Ok();
+        }
+
+        throw new Exception("failed to update user");
+    }
+
+    [HttpPost("AddUser")]
+    public IActionResult AddUser(UserDto user) {
+    string sql = $@" INSERT INTO  tutorialAppSchema.Users( 
+    FirstName,
+    LastName,
+    Email,
+    Gender,
+    Active) VALUES (
+    '{user.FirstName}'
+    ,'{user.LastName}'
+    ,'{user.Email}'
+    ,'{user.Gender}'
+    ,'{user.Active}'
+    )";
+
+    Console.WriteLine(sql);
+
+    if (_dapper.ExecuteSql(sql))
+    {
+        return Ok();
+    }
+
+    throw new Exception("failed to create user");
     }
 
 }
