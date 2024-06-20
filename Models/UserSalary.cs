@@ -1,5 +1,6 @@
 ﻿using System;
 
+namespace DotNetApiCreate.Models;
 public class UserSalary
 {
 	public int UserId { get; set; }

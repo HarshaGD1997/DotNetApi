@@ -1,5 +1,7 @@
 ﻿using System;
 
+namespace DotNetApiCreate.Models;
+
 public partial class UserJobInfo
 {
     public int UserId { get; set; }

@@ -1,8 +1,9 @@
 using System;
 
-namespace DotNetApiCreate
+namespace DotNetApiCreate.Dtos
 {
     //making class partial to have easy access to modify model
+    //Dto Data Transfer Object
     public partial class UserDto
     {
         public string FirstName { get; set; } = "";

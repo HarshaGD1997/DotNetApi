@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections;
 using System.Linq;
+using DotNetApiCreate.Dtos;
+using DotNetApiCreate.Data;
+using DotNetApiCreate.Models;
 
 namespace DotNetApiCreate.Controllers;
 
@@ -71,7 +74,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("AddUser")]
-    public IActionResult AddUser(UserDto user) {
+    public IActionResult AddUser(UserDto user) {                                        //adding Dto user model to exclude Id field 
     string sql = $@" INSERT INTO  tutorialAppSchema.Users( 
     FirstName,
     LastName,

@@ -1,6 +1,6 @@
 using System;
 
-namespace DotNetApiCreate {
+namespace DotNetApiCreate.Models {
     //making class partial to have easy access to modify model
     public partial class User {
         public int UserId { get; set; }
