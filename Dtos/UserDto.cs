@@ -1,9 +1,10 @@
 using System;
 
-namespace DotNetApiCreate {
+namespace DotNetApiCreate
+{
     //making class partial to have easy access to modify model
-    public partial class User {
-        public int UserId { get; set; }
+    public partial class UserDto
+    {
         public string FirstName { get; set; } = "";
         public string LastName { get; set; } = "";
         public string Email { get; set; } = "";
@@ -11,12 +12,4 @@ namespace DotNetApiCreate {
         public bool Active { get; set; }
 
     }
-
-    /*if string is nullable */
-    //public Users() { 
-    //    if(FirstName == null)
-    //    {
-    //        FirstName == "";
-    //    }
-    //}
 }

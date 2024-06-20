@@ -12,7 +12,7 @@ namespace DotNetApiCreate.Controllers;
 public class UserController : ControllerBase
 {
     private readonly DataContextDapper _dapper;
-    
+
     public UserController(IConfiguration configuration) {
 
         _dapper = new DataContextDapper(configuration);
@@ -25,19 +25,75 @@ public class UserController : ControllerBase
     }
 
 
-    [HttpGet("GetUsers/{parameterVal}")]
+    [HttpGet("GetUsers")]
     //public IActionResult Test()
-    public string[] GetUsers(string parameterVal)
+    public IEnumerable<User> GetUsers()
     {
-        string[] response = new string[] {
-            "test1",
-            "test2",
-            "test3",
-            parameterVal
-        };
-        return response;
+        IEnumerable<User> users;
+        string sql = @"
+            SELECT * FROM TutorialAppSchema.Users
+        ";
+        users = _dapper.LoadData<User>(sql);
+        return users;
+
     }
 
+    [HttpGet("GetSingleUser/{UserId}")]
+    //public IActionResult Test()
+    public User GetSingleUser(int UserId)
+    {
+        User user;
+        string sql = $@"
+                        SELECT * FROM tutorialAppSchema.Users where UserId = {UserId}
+        ";
+        user = _dapper.LoadDataSingle<User>(sql);
+        return user;
+    }
+
+    [HttpPut("UpdateUserFromId")]
+    public IActionResult UpdateUserFromId(User user)
+    {
+        string sql = $@" UPDATE  tutorialAppSchema.Users SET FirstName = '{user.FirstName}'
+        , LastName = '{user.LastName}'
+        , Email = '{user.Email}'
+        , Gender = '{user.Gender}'
+        , Active = '{user.Active}'
+        WHERE UserId = {user.UserId}";
+
+        Console.WriteLine(sql);
+
+        if (_dapper.ExecuteSql(sql))
+        {
+            return Ok();
+        }
+
+        throw new Exception("failed to update user");
+    }
+
+    [HttpPost("AddUser")]
+    public IActionResult AddUser(UserDto user) {
+    string sql = $@" INSERT INTO  tutorialAppSchema.Users( 
+    FirstName,
+    LastName,
+    Email,
+    Gender,
+    Active) VALUES (
+    '{user.FirstName}'
+    ,'{user.LastName}'
+    ,'{user.Email}'
+    ,'{user.Gender}'
+    ,'{user.Active}'
+    )";
+
+    Console.WriteLine(sql);
+
+    if (_dapper.ExecuteSql(sql))
+    {
+        return Ok();
+    }
+
+    throw new Exception("failed to create user");
+    }
 
 }
 
