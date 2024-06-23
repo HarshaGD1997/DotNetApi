@@ -16,7 +16,8 @@ public class UserController : ControllerBase
 {
     private readonly DataContextDapper _dapper;
 
-    public UserController(IConfiguration configuration) {
+    public UserController(IConfiguration configuration)
+    {
 
         _dapper = new DataContextDapper(configuration);
     }
@@ -74,8 +75,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("AddUser")]
-    public IActionResult AddUser(UserDto user) {                                        //adding Dto user model to exclude Id field 
-    string sql = $@" INSERT INTO  tutorialAppSchema.Users( 
+    public IActionResult AddUser(UserDto user)
+    {                                        //adding Dto user model to exclude Id field 
+        string sql = $@" INSERT INTO  tutorialAppSchema.Users( 
     FirstName,
     LastName,
     Email,
@@ -88,15 +90,25 @@ public class UserController : ControllerBase
     ,'{user.Active}'
     )";
 
-    Console.WriteLine(sql);
+        Console.WriteLine(sql);
 
-    if (_dapper.ExecuteSql(sql))
-    {
-        return Ok();
+        if (_dapper.ExecuteSql(sql))
+        {
+            return Ok();
+        }
+
+        throw new Exception("failed to create user");
     }
 
-    throw new Exception("failed to create user");
-    }
+    [HttpDelete("DeleteUser/{UserId}")]
+    public IActionResult DeleteUser(int UserId) {
+        string sql = $@" DELETE FROM tutorialAppSchema.Users WHERE UserId = {UserId} ";
 
+        if (_dapper.ExecuteSql(sql))
+        {
+            return Ok();
+        }
+        throw new Exception("failed to deleted user");
+    }
 }
 
